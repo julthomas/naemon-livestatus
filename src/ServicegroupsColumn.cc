@@ -72,6 +72,22 @@ bool ServicegroupsColumn::isNagiosMember(void *data, void *nagobject)
     return false;
 }
 
+bool ServicegroupsColumn::isNagiosMatch(void *data, void *member)
+{
+    // data is already shifted
+    objectlist *list = *(objectlist **)((char *)data + _offset);
+    servicegroup *sg;
+
+    while (list) {
+        sg = (servicegroup *)list->object_ptr;
+        if (regexec((regex_t*)member, sg->group_name, 0, 0, 0) == 0)
+            return true;
+        list = list->next;
+    }
+
+    return false;
+}
+
 bool ServicegroupsColumn::isEmpty(void *data)
 {
     objectlist *list = *(objectlist **)((char *)data + _offset);
