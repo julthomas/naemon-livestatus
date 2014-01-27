@@ -41,6 +41,7 @@ public:
     void *getNagiosObject(char *name); // return pointer to service group
     bool isEmpty(void *data);
     bool isNagiosMember(void *data, void *nagobject);
+    bool isNagiosMatch(void *data, void *member);
 private:
     objectlist *getData(void *);
 };
