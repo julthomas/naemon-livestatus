@@ -77,6 +77,22 @@ bool HostgroupsColumn::isNagiosMember(void *data, void *nagobject)
     return false;
 }
 
+bool HostgroupsColumn::isNagiosMatch(void *data, void *member)
+{
+    // data is already shifted
+    objectlist *list = *(objectlist **)((char *)data + _offset);
+    hostgroup *hg;
+
+    while (list) {
+        hg = (hostgroup *)list->object_ptr;
+        if (regexec((regex_t *)member, hg->group_name, 0, 0, 0) == 0)
+            return true;
+        list = list->next;
+    }
+
+    return false;
+}
+
 bool HostgroupsColumn::isEmpty(void *data)
 {
     objectlist *list = *(objectlist **)((char *)data + _offset);
