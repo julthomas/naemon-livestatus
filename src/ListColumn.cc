@@ -22,6 +22,7 @@
 // to the Free Software Foundation, Inc., 51 Franklin St,  Fifth Floor,
 // Boston, MA 02110-1301 USA.
 
+#include "logger.h"
 #include "ListColumn.h"
 #include "ListColumnFilter.h"
 
@@ -29,4 +30,10 @@
 Filter *ListColumn::createFilter(int opid, char *value)
 {
     return new ListColumnFilter(this, opid, value);
+}
+
+bool ListColumn::isNagiosMatch(void *data, void *member)
+{
+    logger(LG_INFO, "Sorry, Operator ~~ for lists not implemented.");
+    return false;
 }
