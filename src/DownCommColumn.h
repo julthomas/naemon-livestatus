@@ -44,6 +44,7 @@ public:
     void *getNagiosObject(char *name);
     bool isEmpty(void *data);
     bool isNagiosMember(void *data, void *member);
+    bool isNagiosMatch(void *data, void *member);
 };
 
 

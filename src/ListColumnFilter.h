@@ -27,6 +27,10 @@
 
 #include "config.h"
 
+#include <sys/types.h>
+#include <regex.h>
+#include <string>
+
 #include "Filter.h"
 class ListColumn;
 
@@ -36,9 +40,11 @@ class ListColumnFilter : public Filter
     void *_ref_member;
     int _opid;
     bool _empty_ref; // distinct from unknown ref
+    regex_t *_regex;
 
 public:
     ListColumnFilter(ListColumn *column, int opid, char *value);
+    ~ListColumnFilter();
     bool accepts(void *data);
     void *indexFilter(const char *columnname);
 };

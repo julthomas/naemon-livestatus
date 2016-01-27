@@ -25,6 +25,8 @@
 #ifndef ListColumn_h
 #define ListColumn_h
 
+#include <regex.h>
+
 #include "config.h"
 
 #include "Column.h"
@@ -38,6 +40,7 @@ public:
     virtual void *getNagiosObject(char *name) = 0;
     virtual bool isNagiosMember(void *data, void *member) = 0;
     virtual bool isEmpty(void *data) = 0;
+    virtual bool isNagiosMatch(void *data, void *member);
     Filter *createFilter(int opid, char *value);
 };
 

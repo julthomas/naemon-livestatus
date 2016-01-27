@@ -87,6 +87,25 @@ bool DownCommColumn::isNagiosMember(void *data, void *member)
           || (dt->_service == 0 && dt->_host == (host *)data));
 }
 
+bool DownCommColumn::isNagiosMatch(void *data, void *member)
+{
+    TableDownComm *table = _is_downtime ? g_table_downtimes : g_table_comments;
+    for (map<unsigned long, DowntimeOrComment *>::iterator it = table->entriesIteratorBegin();
+            it != table->entriesIteratorEnd();
+            ++it)
+    {
+        DowntimeOrComment *dt = it->second;
+        if ((void *)dt->_service == data ||
+                (dt->_service == 0 && dt->_host == data))
+        {
+            logger(LG_INFO, "find for member (%s,%s): %s", dt->_host?dt->_host->name:"", dt->_service?dt->_service->description:"", dt->_comment);
+            if (regexec((regex_t*)member, dt->_comment, 0, 0, 0) == 0)
+                return true;
+        }
+    }
+    return false;
+}
+
 bool DownCommColumn::isEmpty(void *data)
 {
     if (!data) return true;
