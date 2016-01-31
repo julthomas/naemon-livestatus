@@ -154,7 +154,8 @@ void TableLog::answerQuery(Query *query)
     // but we don't want to crash...
     if (_logfiles.size() == 0) {
         pthread_mutex_unlock(&_lock);
-        logger(LOG_INFO, "Warning: no logfile found, not even nagios.log");
+        if (_max_cached_messages > 0)
+            logger(LOG_INFO, "Warning: no logfile found, not even nagios.log");
         return;
     }
 
@@ -226,6 +227,9 @@ extern char *log_archive_path;
 void TableLog::updateLogfileIndex()
 {
     _last_index_update = time(0);
+
+    if (_max_cached_messages == 0)
+        return;
 
     // We need to find all relevant logfiles. This includes
     // the current nagios.log and all files in the archive
